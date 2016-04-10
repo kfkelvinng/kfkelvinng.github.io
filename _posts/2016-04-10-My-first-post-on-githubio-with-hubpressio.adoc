@@ -1,3 +1,7 @@
 = My first post on github.io with hubpress.io
+Kelvin Ng
+v1.0
 
 Hurray!!
+
+
