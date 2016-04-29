@@ -6,15 +6,16 @@ What would the follow code print?
 
 [source,Java]
 ---------------------------------------------------------------------
-private static Match m = new Match ();
+public class Moo {
+  private static Moo m = new Match ();
 
-private static final Boolean t = true;
+  private static final Boolean t = true;
 
-private Boolean b = t;
+  private Boolean b = t;
 
-public static void main(String[] args) throws Exception {
-
+  public static void main(String[] args) throws Exception {
     System.out.println(m.b);
+  }
 
 }
 ---------------------------------------------------------------------
