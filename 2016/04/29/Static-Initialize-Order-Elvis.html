@@ -77,14 +77,14 @@
     <meta property="og:site_name" content="" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content="Static Initialize Order - Elvis" />
-    <meta property="og:description" content="What would the follow code print? private static Match m = new Match (); private static final Boolean t = true; private Boolean b = t; public static void main(String[] args) throws Exception {     System.out.println(m.b); }..." />
+    <meta property="og:description" content="What would the follow code print? public class Moo {   private static Moo m = new Match ();   private static final Boolean t = true;   private Boolean b = t;   public static void main(String[] args) throws Exception {     System.out.println(m.b);   } }..." />
     <meta property="og:url" content="https://kfkelvinng.github.io/2016/04/29/Static-Initialize-Order-Elvis.html" />
     <meta property="article:published_time" content="2016-04-28T23:00:00.000Z" />
-    <meta property="article:modified_time" content="2016-04-29T22:45:05.250Z" />
+    <meta property="article:modified_time" content="2016-04-29T22:54:29.558Z" />
     
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="Static Initialize Order - Elvis" />
-    <meta name="twitter:description" content="What would the follow code print? private static Match m = new Match (); private static final Boolean t = true; private Boolean b = t; public static void main(String[] args) throws Exception {     System.out.println(m.b); }..." />
+    <meta name="twitter:description" content="What would the follow code print? public class Moo {   private static Moo m = new Match ();   private static final Boolean t = true;   private Boolean b = t;   public static void main(String[] args) throws Exception {     System.out.println(m.b);   } }..." />
     <meta name="twitter:url" content="https://kfkelvinng.github.io/2016/04/29/Static-Initialize-Order-Elvis.html" />
     
     <script type="application/ld+json">
@@ -102,8 +102,8 @@
     "headline": "Static Initialize Order - Elvis",
     "url": "https://kfkelvinng.github.io/2016/04/29/Static-Initialize-Order-Elvis.html",
     "datePublished": "2016-04-28T23:00:00.000Z",
-    "dateModified": "2016-04-29T22:45:05.250Z",
-    "description": "What would the follow code print? private static Match m = new Match (); private static final Boolean t = true; private Boolean b = t; public static void main(String[] args) throws Exception {     System.out.println(m.b); }..."
+    "dateModified": "2016-04-29T22:54:29.558Z",
+    "description": "What would the follow code print? public class Moo {   private static Moo m = new Match ();   private static final Boolean t = true;   private Boolean b = t;   public static void main(String[] args) throws Exception {     System.out.println(m.b);   } }..."
 }
     </script>
 
@@ -189,15 +189,16 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-Java" data-lang="Java">private static Match m = new Match ();
+<pre class="highlight"><code class="language-Java" data-lang="Java">public class Moo {
+  private static Moo m = new Match ();
 
-private static final Boolean t = true;
+  private static final Boolean t = true;
 
-private Boolean b = t;
+  private Boolean b = t;
 
-public static void main(String[] args) throws Exception {
-
+  public static void main(String[] args) throws Exception {
     System.out.println(m.b);
+  }
 
 }</code></pre>
 </div>
