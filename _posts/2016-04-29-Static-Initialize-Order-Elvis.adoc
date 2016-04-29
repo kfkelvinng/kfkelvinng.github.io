@@ -1,0 +1,18 @@
+= Static Initialize Order - Elvis
+Kelvin Ng
+v1.0
+
+[code lang="Java"]
+private static Match m = new Match ();
+
+private static final Boolean t = true;
+
+private Boolean b = t;
+
+public static void main(String[] args) throws Exception {
+
+    System.out.println(m.b);
+
+}
+
+[/code]
