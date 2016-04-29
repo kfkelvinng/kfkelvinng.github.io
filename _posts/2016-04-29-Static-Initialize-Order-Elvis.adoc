@@ -2,7 +2,10 @@
 Kelvin Ng
 v1.0
 
-[code lang="Java"]
+What would the follow code print?
+
+[source,Java]
+---------------------------------------------------------------------
 private static Match m = new Match ();
 
 private static final Boolean t = true;
@@ -14,5 +17,5 @@ public static void main(String[] args) throws Exception {
     System.out.println(m.b);
 
 }
+---------------------------------------------------------------------
 
-[/code]
