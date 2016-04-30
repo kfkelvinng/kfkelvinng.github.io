@@ -1,0 +1,79 @@
+= ConcurrentMap of AtomicInteger vs Integer
+
+In a concurrent environment, we often see:
+[source, java]
+ConcurrentMap<Key, Integer>
+
+An example of this is keeping track of the number of subscriptions for a topic.
+
+[source, java]
+--------------------------------------------------
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
+
+public class SubscriptionCount {
+	
+  private final ConcurrentMap<String, Integer> map = new ConcurrentHashMap<>();
+  
+  /** Always return true */
+  public boolean add(String ticker) {
+    while(true) { // thread contention
+      // Similar to double lock checking to avoid object creation
+      Integer existing = map.get(ticker);
+      if (existing == null) {
+        existing = map.putIfAbsent(ticker, Integer.valueOf(1));
+        if (existing == null) {
+          return true;
+        }
+      }
+			
+      if (map.replace(ticker, existing, existing+1)) {
+        // run from the beginning just in case ticker is removed
+        return true;
+      }
+      // continue;
+    }
+  }
+
+  /** Return true if collection is modified as the result */
+  public boolean remove(String ticker) {
+    while(true) { // thread contention
+      Integer existing = map.get(ticker);
+      if (existing == null) {
+        return false;
+      }
+
+      if (existing.equals(Integer.valueOf(1))) {
+        if (map.remove(ticker, Integer.valueOf(1))) {
+          return true;
+        }
+        // continue;
+      } else if (map.replace(ticker, existing, existing-1)) {
+        return true;
+      }
+      // continue;
+    }
+  }		
+}
+--------------------------------------------------
+
+In Guava, ConcurrentHashMultiset does exactly or more than what we want here.
+
+In https://github.com/google/guava/blob/v2.0/src/com/google/common/collect/ConcurrentHashMultiset.java[V2.0] of Guava, it is implemented with ConcurrentHashMap<T, Integer>
+
+Many of us surely must have thought about reducing objection creation with
+[source, Java]
+ConcurrentHashMap<T, AtomicInteger>
+
+The problem with this, the AtomicInteger does not implement equals(). As the result, it is the identity equal (==) in Object.equals().
+
+Both replace(...) in add(...) and remove(...) would not work
+[source, Java]
+map.replace(ticker, existing, existing+1)
+map.replace(ticker, existing, existing-1)
+
+
+This problem is solved in Guava v10.0 by limiting add(...) to replace iif existing is not 0 in. If it is 0, that implies there is a thread contention. In that case, add(...) has to wait for remove(...) to remove the 0 before add(...) put it back with putIfAbsent(...).
+
+
