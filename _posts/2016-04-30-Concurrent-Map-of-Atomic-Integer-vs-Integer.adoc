@@ -56,17 +56,15 @@ public class SubscriptionCount {
 }
 --------------------------------------------------
 
-In Guava, ConcurrentHashMultiset does exactly or more than what we want here.
+In Guava, `ConcurrentHashMultiset` does exactly what we want here.
 
-In https://github.com/google/guava/blob/v2.0/src/com/google/common/collect/ConcurrentHashMultiset.java[V2.0] of Guava, it is implemented with ConcurrentHashMap<T, Integer>
+In https://github.com/google/guava/blob/v2.0/src/com/google/common/collect/ConcurrentHashMultiset.java[Guava V2.0], it is implemented with `ConcurrentHashMap<T, Integer>`
 
-Many of us surely must have thought about reducing objection creation with
-[source, Java]
-ConcurrentHashMap<T, AtomicInteger>
+Many of us surely must have thought about reducing objection creation with a mutable `AtomicInteger` in a `ConcurrentHashMap<T, AtomicInteger>`.
 
-The problem with this, the AtomicInteger does not implement equals(). As the result, it is the identity equal (==) in Object.equals().
+The problem with this, the `AtomicInteger` does not implement `equals()`. As the result, it is the identity equality `(==)` which defined in `Object.equals()`.
 
-Both replace(...) in add(...) and remove(...) would not work
+The `replace(...)`s in `add(...)` and `remove(...)` would always successful in replacing the existing `AtomicInteger` that we obtained from `get(...)`  as it is the same instance.
 [source, Java]
 map.replace(ticker, existing, existing+1)
 map.replace(ticker, existing, existing-1)
