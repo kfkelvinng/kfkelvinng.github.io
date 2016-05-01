@@ -2,7 +2,7 @@
 
 In a concurrent environment, we often see `ConcurrentMap<Key, Integer>`.
 
-An good example is tracking the number of subscriptions for a topic.
+An good example is tracking the number of subscriptions for a topic. Keeping this number thread-safe could be important if the number is used in determine whether it is safe to unsubscribe the upstream feed providing that topic.
 
 [source, java]
 --------------------------------------------------
