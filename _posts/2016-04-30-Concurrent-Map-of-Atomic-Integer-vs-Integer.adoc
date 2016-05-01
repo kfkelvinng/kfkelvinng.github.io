@@ -1,10 +1,8 @@
 = ConcurrentMap of AtomicInteger vs Integer
 
-In a concurrent environment, we often see:
-[source, java]
-ConcurrentMap<Key, Integer>
+In a concurrent environment, we often see `ConcurrentMap<Key, Integer>`.
 
-An example of this is keeping track of the number of subscriptions for a topic.
+An good example is tracking the number of subscriptions for a topic.
 
 [source, java]
 --------------------------------------------------
