@@ -73,3 +73,5 @@ This problem is solved in https://github.com/google/guava/blob/v10.0/guava/src/c
 ****
 
 Eventually, probably within a nanosecond, the thread that updated the old `AtomicInteger` to 0 would either removed the `AtomicInteger` that having 0 from the map before any other threads have noticed or it has already replaced. In that case, there is nothing else to do.
+
+Food for thought, what if we have a flaky connections with a lonely subscriber that 0=>1=>0=>1=>0 a lot? Can we reduce the object creation of `Atomicinteger`? How about instead of removing 0 straight away, we mark 0 to -1 if nothing has touched it for a while?
