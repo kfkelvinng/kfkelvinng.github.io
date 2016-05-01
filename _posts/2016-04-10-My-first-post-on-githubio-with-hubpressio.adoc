@@ -4,4 +4,7 @@ v1.0
 
 Hurray!!
 
+I have used MarkDown more often than any other markup language. AsciiDoc is something completely new to me.
 
+
+http://asciidoctor.org/docs/asciidoc-syntax-quick-reference/
