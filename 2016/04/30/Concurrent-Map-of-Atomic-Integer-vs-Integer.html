@@ -80,7 +80,7 @@
     <meta property="og:description" content="In a concurrent environment, we often see ConcurrentMap&amp;lt;Key, Integer&amp;gt;. An good example is tracking the number of subscriptions for a topic. Keeping this number thread-safe could be important if the number is used in determine whether it..." />
     <meta property="og:url" content="https://kfkelvinng.github.io/2016/04/30/Concurrent-Map-of-Atomic-Integer-vs-Integer.html" />
     <meta property="article:published_time" content="2016-04-29T23:00:00.000Z" />
-    <meta property="article:modified_time" content="2016-05-01T16:54:46.370Z" />
+    <meta property="article:modified_time" content="2016-05-01T16:57:40.578Z" />
     
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="ConcurrentMap of AtomicInteger vs Integer" />
@@ -102,7 +102,7 @@
     "headline": "ConcurrentMap of AtomicInteger vs Integer",
     "url": "https://kfkelvinng.github.io/2016/04/30/Concurrent-Map-of-Atomic-Integer-vs-Integer.html",
     "datePublished": "2016-04-29T23:00:00.000Z",
-    "dateModified": "2016-05-01T16:54:46.370Z",
+    "dateModified": "2016-05-01T16:57:40.578Z",
     "description": "In a concurrent environment, we often see ConcurrentMap&amp;lt;Key, Integer&amp;gt;. An good example is tracking the number of subscriptions for a topic. Keeping this number thread-safe could be important if the number is used in determine whether it..."
 }
     </script>
@@ -266,7 +266,7 @@ public class SubscriptionCount {
 </div>
 </div>
 <div class="paragraph">
-<p>Eventaually, probably within a nanosecond, the remove(&#8230;&#8203;) call that update the old <code>AtomicInteger</code> to 0 would remove the <code>AtomicInteger</code> that having 0 from the map.</p>
+<p>Eventually, probably within a nanosecond, the thread that updated the old <code>AtomicInteger</code> to 0 would either removed the <code>AtomicInteger</code> that having 0 from the map before any other threads have noticed or it has already replaced. In that case, there is nothing else to do.</p>
 </div>
           </div>
           <footer class="post-footer">
