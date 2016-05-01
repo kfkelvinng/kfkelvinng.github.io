@@ -72,4 +72,4 @@ This problem is solved in https://github.com/google/guava/blob/v10.0/guava/src/c
           // we can just do that work here.
 ****
 
-Eventaually, probably within a nanosecond, the remove(...) call that update the old `AtomicInteger` to 0 would remove the `AtomicInteger` that having 0 from the map.
+Eventually, probably within a nanosecond, the thread that updated the old `AtomicInteger` to 0 would either removed the `AtomicInteger` that having 0 from the map before any other threads have noticed or it has already replaced. In that case, there is nothing else to do.
