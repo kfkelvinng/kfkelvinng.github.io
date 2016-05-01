@@ -69,6 +69,10 @@ map.replace(ticker, existing, existing+1)
 map.replace(ticker, existing, existing-1)
 
 
-This problem is solved in Guava v10.0 by limiting add(...) to replace iif existing is not 0 in. If it is 0, that implies there is a thread contention. In that case, add(...) has to wait for remove(...) to remove the 0 before add(...) put it back with putIfAbsent(...).
+This problem is solved in https://github.com/google/guava/blob/v10.0/guava/src/com/google/common/collect/ConcurrentHashMultiset.java[Guava v10.0] by limiting add(...) to replace iif the existing is not 0. If it is 0, that implies there is a thread contention. In that case, add(...) has to wait for the remove(...) call that 1=>0 to remove the 0 before add(...) put it back with putIfAbsent(...).
 
-
+****
+          // In the case of a concurrent remove, we might observe a zero value, which means another
+          // thread is about to remove (element, existingCounter) from the map. Rather than wait,
+          // we can just do that work here.
+****
