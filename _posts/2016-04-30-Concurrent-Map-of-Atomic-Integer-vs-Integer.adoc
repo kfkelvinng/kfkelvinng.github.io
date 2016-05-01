@@ -56,11 +56,10 @@ public class SubscriptionCount {
 }
 --------------------------------------------------
 
-In Guava, `ConcurrentHashMultiset` does exactly what we want here.
 
-In https://github.com/google/guava/blob/v2.0/src/com/google/common/collect/ConcurrentHashMultiset.java[Guava V2.0], it is implemented with `ConcurrentHashMap<T, Integer>`
+Starting from https://github.com/google/guava/blob/v2.0/src/com/google/common/collect/ConcurrentHashMultiset.java[Guava V2.0], `ConcurrentHashMultiset` does exactly what we want here. It is implemented with `ConcurrentHashMap<T, Integer>`.
 
-Many of us surely must have thought about reducing objection creation with a mutable `AtomicInteger` in a `ConcurrentHashMap<T, AtomicInteger>`.
+Many of us surely must have thought about reducing objection creation by replacing the immutable `Integer` with a mutable `AtomicInteger` and ends up with a `ConcurrentHashMap<T, AtomicInteger>`.
 
 The problem with this, the `AtomicInteger` does not implement `equals()`. As the result, it is the identity equality `(==)` which defined in `Object.equals()`.
 
