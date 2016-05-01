@@ -64,9 +64,6 @@ Many of us surely must have thought about reducing objection creation by replaci
 The problem with this, the `AtomicInteger` does not implement `equals()`. As the result, it is the identity equality `(==)` which defined in `Object.equals()`.
 
 The `replace(...)`s in `add(...)` and `remove(...)` would always successful in replacing the existing `AtomicInteger` that we obtained from `get(...)`  as it is the same instance.
-[source, Java]
-map.replace(ticker, existing, existing+1)
-map.replace(ticker, existing, existing-1)
 
 
 This problem is solved in https://github.com/google/guava/blob/v10.0/guava/src/com/google/common/collect/ConcurrentHashMultiset.java[Guava v10.0] by limiting add(...) to update the `AtmoicInteger` iif the existing one is not 0. If it is 0, that implies there is a thread contention. In that case, add(...) has to replace the 0 one with a new `AtomicInteger`.
