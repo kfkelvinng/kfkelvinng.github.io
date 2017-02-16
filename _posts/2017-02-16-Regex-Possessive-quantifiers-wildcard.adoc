@@ -2,7 +2,7 @@
 
 Most of the time, Possessive quantifiers is used for optimizating performance for regex with large number of wildcard. I rarely come across situation where I need Possessive quantifiers to do something that Greedy quantifiers could not perform. 
 
-Today, I found an interesting usage of this quantifier. I have this handcrafted json which doesn't have a consistent format. I have to find "type" that is not on a list. Let say anything outside of "Fruit"and "Vegetables". I couldn't format it as me myself and someone else are editing this file for the next commit. Otherwise, we would have to resolve conflict after rebase. So we need a solution that search the json regardless the formatting.
+Today, I found an interesting usage of this quantifier. I have this handcrafted json which doesn't have a consistent format. I have to find "type" that is not on a list. Let say anything outside of "Fruit" and "Vegetables". I couldn't format it as me myself and someone else are editing this file for the next commit. Otherwise, we would have to resolve conflict after rebase. So we need a solution that search the json regardless the formatting.
 
 [source, json]
 --------------------------------------------------
@@ -26,3 +26,17 @@ Today, I found an interesting usage of this quantifier. I have this handcrafted 
 
 
 Possessive quantifiers is good to go with zero-width negative look ahead group.
+
+For positive searching either "Fruit" or "Vegetables", Greedy quantifier would work. However, it doesn't work for negative search as the backtracking would found something within the wildcard to get through the negative lookahead group (e.g. "" for " : ").
+
+[source, regex]
+--------------------------------------------------
+"type"[^"]+("Fruit"|"Vegetables")
+--------------------------------------------------
+
+Alternatively, we could move the Greedy quantifiers into the negative lookahead group.
+
+[source, regex]
+--------------------------------------------------
+"type"(?![^"]+("Fruit"|"Vegetables"))
+--------------------------------------------------
