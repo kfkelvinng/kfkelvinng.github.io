@@ -24,3 +24,5 @@ Today, I found an interesting usage of this quantifier. I have this handcrafted 
 "type"[^"]++(?!"Fruit"|"Vegetables")
 --------------------------------------------------
 
+
+Possessive quantifiers is good to go with zero-width negative look ahead group.
