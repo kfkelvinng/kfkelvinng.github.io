@@ -1,0 +1,18 @@
+= Docker moving files in and out container
+
+This happens so often but the solution is complicated
+
+[source, bash]
+--------------------------------------------------
+# this works
+docker exec -it container_name bash
+
+# this works (typing and close with ctrl-d to EOF)
+docker exec -i container_name "bash" "-c" "cat - > kel"
+
+# this only works without -t
+cat some.txt | docker exec -i container_name "bash" "-c" "cat - > kel"
+
+# alternatively
+docker cp some.txt container_name:/kel
+--------------------------------------------------
