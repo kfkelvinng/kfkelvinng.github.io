@@ -1,0 +1,55 @@
+= Label Encoder for multi-word with CountVectorizer
+
+Every so often, a compact list of the non-zero element indices is preferred rather than a sparse array.
+
+[source, python]
+--------------------------------------------------
+  >>> fit(['123 456', '111'])
+  >>> transform(['123 456', '123', '456', '111'])
+  [array([1, 2]), array([1]), array([2]), array([0])]
+--------------------------------------------------
+
+`sklearn.preprocessing.LabelEncoder` may look like a perfect choice. However, its `fit()` method doesn't take `str` generator, so the code would look non-numpy-nic.
+
+[source, python]
+--------------------------------------------------
+class TokenizeLabelEncoder:
+  """
+  >>> fit(['123 456', '111'])
+  >>> transform(['123 456', '123', '456', '111'])
+  [array([1, 2]), array([1]), array([2]), array([0])]
+  """
+  def __init__(self):
+    from sklearn.preprocessing import LabelEncoder
+    self.label_encoder = LabelEncoder()
+    self.word_tokenizer = CountVectorizer().build_tokenizer()
+
+  def fit(self, labels):
+    import itertools
+    self.label_encoder.fit(list(word for word in itertools.chain.from_iterable(self.word_tokenizer(label) for label in labels) if word not in stopwords))
+
+  def transform(self, labels):
+    return [self.label_encoder.transform(self.word_tokenizer(label)) for label in labels]
+--------------------------------------------------
+
+`sklearn.feature_extraction.text.CountVectorizer` may not look like a perfect choice for encoding. However, its `transform` method return scipy sparse csr_matrix which keep the index of the non-zero element. The code would look like this:
+
+[source, python]
+--------------------------------------------------
+class SparseTokenizeLabelEncoder:
+  """
+  >>> fit(['123 456', '111'])
+  >>> transform(['123 456', '123', '456', '111'])
+  [array([1, 2]), array([1]), array([2]), array([0])]
+  """
+  def __init__(self):
+    self.vectorizer = CountVectorizer(binary=True)
+
+  def fit(self, labels):
+    self.vectorizer.fit(labels)
+
+  def transform(self, labels):
+    return [sparse_row.indices for sparse_row in self.vectorizer.transform(labels)]
+--------------------------------------------------
+
+
