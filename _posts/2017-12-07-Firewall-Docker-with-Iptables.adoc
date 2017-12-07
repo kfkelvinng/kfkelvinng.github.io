@@ -1,0 +1,49 @@
+= Firewall Docker with Iptables
+
+
+[source, bash]
+--------------------------------------------------
+# New intercept chain
+iptables -N PRE_DOCKER
+# Jump to intercept chain
+iptables -I FORWARD -j PRE_DOCKER
+# Logging for debug (see below)
+# iptables -A PRE_DOCKER -j LOG
+# Return from where we jump if it is an IP we trust (replace 256 with an IP you trust)
+iptables -A PRE_DOCKER -s 256.256.256.256/32 -i eth0 -j RETURN
+# Drop it by default
+iptables -A PRE_DOCKER -i eth0 -j DROP
+--------------------------------------------------
+
+The finish iptables rules (`iptables -S`) would look like
+
+[source, iptables]
+--------------------------------------------------
+some -P here...
+-N DOCKER
+-N DOCKER-INGRESS
+-N DOCKER-ISOLATION
+-N DOCKER-USER
+-N PRE_DOCKER
+-A FORWARD -j PRE_DOCKER
+-A FORWARD -j DOCKER-USER
+-A FORWARD -j DOCKER-INGRESS
+-A FORWARD -j DOCKER-ISOLATION
+-A FORWARD -o docker_gwbridge -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A FORWARD -o docker_gwbridge -j DOCKER
+-A FORWARD -i docker_gwbridge ! -o docker_gwbridge -j ACCEPT
+-A FORWARD -o docker0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A FORWARD -o docker0 -j DOCKER
+-A FORWARD -i docker0 ! -o docker0 -j ACCEPT
+-A FORWARD -i docker0 -o docker0 -j ACCEPT
+-A FORWARD -i docker_gwbridge -o docker_gwbridge -j DROP
+some -A DOCKER-* here...
+-A PRE_DOCKER -s 256.256.256.256/32 -i eth0 -j RETURN
+-A PRE_DOCKER -j LOG
+-A PRE_DOCKER -s 87.224.30.70/32 -i docker0 -j RETURN
+-A PRE_DOCKER -i eth0 -j DROP
+--------------------------------------------------
+
+https://wiki.centos.org/HowTos/Network/IPTables
+https://forums.docker.com/t/restricting-external-container-access-with-iptables/2225/4
+
