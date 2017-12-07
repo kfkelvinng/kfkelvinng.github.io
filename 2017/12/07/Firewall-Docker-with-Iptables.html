@@ -80,7 +80,7 @@
     <meta property="og:description" content="# New intercept chain iptables -N PRE_DOCKER # Jump to intercept chain iptables -I FORWARD -j PRE_DOCKER # Logging for debug (see below) # iptables -A PRE_DOCKER -j LOG # Return from where we jump if it is an IP we trust..." />
     <meta property="og:url" content="https://kfkelvinng.github.io/2017/12/07/Firewall-Docker-with-Iptables.html" />
     <meta property="article:published_time" content="2017-12-07T00:00:00.000Z" />
-    <meta property="article:modified_time" content="2017-12-07T15:01:40.400Z" />
+    <meta property="article:modified_time" content="2017-12-07T15:21:05.469Z" />
     
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="Firewall Docker with Iptables" />
@@ -102,7 +102,7 @@
     "headline": "Firewall Docker with Iptables",
     "url": "https://kfkelvinng.github.io/2017/12/07/Firewall-Docker-with-Iptables.html",
     "datePublished": "2017-12-07T00:00:00.000Z",
-    "dateModified": "2017-12-07T15:01:40.400Z",
+    "dateModified": "2017-12-07T15:21:05.469Z",
     "description": "# New intercept chain iptables -N PRE_DOCKER # Jump to intercept chain iptables -I FORWARD -j PRE_DOCKER # Logging for debug (see below) # iptables -A PRE_DOCKER -j LOG # Return from where we jump if it is an IP we trust..."
 }
     </script>
@@ -222,10 +222,18 @@ iptables -A PRE_DOCKER -i eth0 -j DROP</code></pre>
 -A FORWARD -i docker0 -o docker0 -j ACCEPT
 -A FORWARD -i docker_gwbridge -o docker_gwbridge -j DROP
 some -A DOCKER-* here...
--A PRE_DOCKER -s 256.256.256.256/32 -i eth0 -j RETURN
 -A PRE_DOCKER -j LOG
--A PRE_DOCKER -s 87.224.30.70/32 -i docker0 -j RETURN
+-A PRE_DOCKER -s 256.256.256.256/32 -i eth0 -j RETURN
 -A PRE_DOCKER -i eth0 -j DROP</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>if <code>-A PRE_DOCKER -j LOG</code> is there, you would find the log in <code>/var/log/syslog</code> that explain the need of <code>-i eth0</code> and <code>-i docker0</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-iptables" data-lang="iptables">Dec  7 16:14:23 ds06 kernel: [164304.277225] IN=eth0 OUT=docker0 MAC= SRC=A DST=B LEN=64 TOS=0x00 PREC=0x00 TTL=47 ID=34183 DF PROTO=TCP SPT=61065 DPT=7200 WINDOW=65535 RES=0x00 SYN URGP=0
+Dec  7 16:14:23 ds06 kernel: [164304.277307] IN=docker0 OUT=eth0 PHYSIN=veth730785d MAC= SRC=B DST=A LEN=60 TOS=0x00 PREC=0x00 TTL=63 ID=0 DF PROTO=TCP SPT=7200 DPT=61065 WINDOW=28960 RES=0x00 ACK SYN URGP=0</code></pre>
 </div>
 </div>
 <div class="paragraph">
