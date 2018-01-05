@@ -1,5 +1,6 @@
 = Firewall Docker with Iptables
 
+Docker has placed its own forwarding in the iptables, so blocking INPUT and OUTPUT would not protect services expose via docker publish port. To make it only accessible from a trust ip, here is the guide.
 
 [source, bash]
 --------------------------------------------------
@@ -21,13 +22,18 @@ The finish iptables rules (`iptables -S`) would look like
 
 [source, iptables]
 --------------------------------------------------
-some -P here...
+=== The existing -P rules ===
+-P INPUT ACCEPT
+-P FORWARD DROP
+-P OUTPUT ACCEPT
 -N DOCKER
 -N DOCKER-INGRESS
 -N DOCKER-ISOLATION
 -N DOCKER-USER
+=== The new PRE_DOCKER chain you added ===
 -N PRE_DOCKER
 -A FORWARD -j PRE_DOCKER
+=== The existing FORWARD rules created by docker ===
 -A FORWARD -j DOCKER-USER
 -A FORWARD -j DOCKER-INGRESS
 -A FORWARD -j DOCKER-ISOLATION
@@ -39,9 +45,11 @@ some -P here...
 -A FORWARD -i docker0 ! -o docker0 -j ACCEPT
 -A FORWARD -i docker0 -o docker0 -j ACCEPT
 -A FORWARD -i docker_gwbridge -o docker_gwbridge -j DROP
-some -A DOCKER-* here...
+...
+=== The new PRE_DOCKER rules you added ===
 -A PRE_DOCKER -j LOG
--A PRE_DOCKER -s 256.256.256.256/32 -i eth0 -j RETURN
+-A PRE_DOCKER -m conntrack --ctstate RELATED,ESTABLISHED -j RETURN
+-A PRE_DOCKER -s XXX.XXX.XXX.XXX/32 -i eth0 -j RETURN
 -A PRE_DOCKER -i eth0 -j DROP
 --------------------------------------------------
 
