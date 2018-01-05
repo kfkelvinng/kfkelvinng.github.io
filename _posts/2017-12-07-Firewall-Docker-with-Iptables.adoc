@@ -9,8 +9,10 @@ iptables -N PRE_DOCKER
 iptables -I FORWARD -j PRE_DOCKER
 # Logging for debug (see below)
 # iptables -A PRE_DOCKER -j LOG
-# Return from where we jump if it is an IP we trust (replace 256 with an IP you trust)
-iptables -A PRE_DOCKER -s 256.256.256.256/32 -i eth0 -j RETURN
+# Return from where we jump if it is a connection we initial (otherwise apt wouldn't work inside docker)
+iptables -A PRE_DOCKER -m conntrack --ctstate RELATED,ESTABLISHED -j RETURN
+# Return from where we jump if it is an IP we trust (replace XXX with an IP you trust)
+iptables -A PRE_DOCKER -s XXX.XXX.XXX.XXX/32 -i eth0 -j RETURN
 # Drop it by default
 iptables -A PRE_DOCKER -i eth0 -j DROP
 --------------------------------------------------
