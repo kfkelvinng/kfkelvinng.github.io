@@ -141,7 +141,7 @@
             </h2>
           </header>
           <section itemprop="description" class="post-item-excerpt">
-            <p># New intercept chain iptables -N PRE_DOCKER # Jump to intercept chain iptables -I FORWARD -j PRE_DOCKER # Logging for debug (see below) # iptables -A PRE_DOCKER -j LOG # Return from where we jump if it&hellip;</p>
+            <p>Docker has placed its own forwarding in the iptables, so blocking INPUT and OUTPUT would not protect services expose via docker publish port. To make it only accessible from a trust ip, here is the&hellip;</p>
           </section>
           <footer class="post-item-footer">
             <ul class="post-item-meta-list">
