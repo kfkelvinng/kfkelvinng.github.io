@@ -1,8 +1,51 @@
-= Regex Possessive quantifiers wildcard
+= IntelliJ Regex Possessive quantifiers wildcard
 
-Most of the time, Possessive quantifiers is used for optimizating performance for regex with large number of wildcard. I rarely come across situation where I need Possessive quantifiers to do something that Greedy quantifiers could not perform. 
+I rarely come across situation where I need Possessive quantifiers to do something that Greedy quantifiers could not perform.
 
-Today, I found an interesting usage of this quantifier. I have this handcrafted json which doesn't have a consistent format. I have to find "type" that is not on a list. Let say anything outside of "Fruit" and "Vegetables". I couldn't format it as me myself and someone else are editing this file for the next commit. Otherwise, we would have to resolve conflict after rebase. So we need a solution that search the json regardless the formatting.
+[cols=4*,options="header"]
+[%autowidth]
+|===
+|Greedy|Reluctant|Possessive|Meaning
+|`X?`
+|`X??`
+|`X?+`
+|`X`, once or not at all
+
+
+|`X*`
+|`X*?`
+|`X*+`
+|`X`, zero or more times
+
+
+|`X+`
+|`X+?`
+|`X++`
+|`X`, one or more times
+
+
+|`X{n}`
+|`X{n}?`
+|`X{n}+`
+|`X`, exactly `n` times
+
+
+|`X{n,}`
+|`X{n,}?`
+|`X{n,}+`
+|`X`, at least `n` times
+
+
+|`X{n,m}`
+|`X{n,m}?`
+|`X{n,m}+`
+|`X`, at least `n` but not more than `m` times
+|===
+
+
+
+Today, I have this json with inconsistent ``:``, ``: ``, `` : ``. I have to find "type" that is not `"Fruit"` or `"Vegetables"`. This could be a large file is in collabration so I have to retain the format to avoid creating conflict.
+
 
 [source, json]
 --------------------------------------------------
