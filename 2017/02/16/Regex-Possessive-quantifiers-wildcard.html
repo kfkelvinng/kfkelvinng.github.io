@@ -80,7 +80,7 @@
     <meta property="og:description" content="I rarely come across situation where I need Possessive quantifiers to do something that Greedy quantifiers could not perform. Greedy Reluctant Possessive Meaning X? X?? X?+ X, once or not at all X* X*? X*+ X, zero or more times..." />
     <meta property="og:url" content="https://kfkelvinng.github.io/2017/02/16/Regex-Possessive-quantifiers-wildcard.html" />
     <meta property="article:published_time" content="2017-02-16T00:00:00.000Z" />
-    <meta property="article:modified_time" content="2018-01-24T12:53:52.909Z" />
+    <meta property="article:modified_time" content="2018-01-24T12:57:09.260Z" />
     
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="Regex Possessive quantifiers wildcard" />
@@ -102,7 +102,7 @@
     "headline": "Regex Possessive quantifiers wildcard",
     "url": "https://kfkelvinng.github.io/2017/02/16/Regex-Possessive-quantifiers-wildcard.html",
     "datePublished": "2017-02-16T00:00:00.000Z",
-    "dateModified": "2018-01-24T12:53:52.909Z",
+    "dateModified": "2018-01-24T12:57:09.260Z",
     "description": "I rarely come across situation where I need Possessive quantifiers to do something that Greedy quantifiers could not perform. Greedy Reluctant Possessive Meaning X? X?? X?+ X, once or not at all X* X*? X*+ X, zero or more times..."
 }
     </script>
@@ -263,13 +263,13 @@
 <p>To break down:</p>
 </div>
 <div class="paragraph">
-<p><code>"type"</code> would match <code>"Type"</code></p>
+<p><code>"type"</code> would match <code>"type"</code></p>
 </div>
 <div class="paragraph">
 <p><code>[^"]++</code> would match any of <code>:</code>, <code>: </code>, <code> : </code></p>
 </div>
 <div class="paragraph">
-<p><code>(?!"Fruit"|"Vegetables") would match `"Grains"</code> but not <code>"Fruits"</code> or <code>"Vegetables"</code></p>
+<p><code>(?!"Fruit"|"Vegetables")</code> would match <code>"Grains"</code> but not <code>"Fruits"</code> or <code>"Vegetables"</code></p>
 </div>
 <div class="paragraph">
 <p>For positive searching either "Fruit" or "Vegetables", Greedy quantifier would work. However, it doesn&#8217;t work for negative search as the backtracking would found something within the wildcard <code>[^"]+</code> to get through the negative lookahead group.</p>
