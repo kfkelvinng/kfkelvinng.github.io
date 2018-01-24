@@ -1,4 +1,4 @@
-= IntelliJ Regex Possessive quantifiers wildcard
+= Regex Possessive quantifiers wildcard
 
 I rarely come across situation where I need Possessive quantifiers to do something that Greedy quantifiers could not perform.
 
@@ -44,38 +44,40 @@ I rarely come across situation where I need Possessive quantifiers to do somethi
 
 
 
-Today, I have this json with inconsistent ``:``, ``: ``, `` : ``. I have to find "type" that is not `"Fruit"` or `"Vegetables"`. This could be a large file is in collabration so I have to retain the format to avoid creating conflict.
+Today, I have this json with inconsistent ``:``, ``: ``, `` : ``. I want to find "type" that is not `"Fruit"` or `"Vegetables"` in IntelliJ. This could be a large file is in collabration so I have to retain the format to avoid creating conflict.
 
 
 [source, json]
 --------------------------------------------------
-[
-  {
-    "type":"Fruits"
-  },
-  {
-    "type": "Vegetables"
-  },
-  {
-    "type" : "Grains"
-  }
-]
+"type":"Fruits"
+"type": "Vegetables"
+"type" : "Grains"
 --------------------------------------------------
+
+The IntelliJ search uses Java Pattern for regex. Possessive quantifiers is perfect to go with zero-width negative look ahead group.
 
 [source, regex]
 --------------------------------------------------
 "type"[^"]++(?!"Fruit"|"Vegetables")
 --------------------------------------------------
 
+To break down:
 
-Possessive quantifiers is good to go with zero-width negative look ahead group.
+`"type"` would match `"Type"`
 
-For positive searching either "Fruit" or "Vegetables", Greedy quantifier would work. However, it doesn't work for negative search as the backtracking would found something within the wildcard to get through the negative lookahead group (e.g. "" for " : ").
+`[^"]++` would match any of ``:``, ``: ``, `` : ``
+
+`(?!"Fruit"|"Vegetables") would match `"Grains"` but not `"Fruits"` or `"Vegetables"`
+
+
+For positive searching either "Fruit" or "Vegetables", Greedy quantifier would work. However, it doesn't work for negative search as the backtracking would found something within the wildcard `[^"]+` to get through the negative lookahead group.
 
 [source, regex]
 --------------------------------------------------
-"type"[^"]+("Fruit"|"Vegetables")
+"type"[^"]+(?!"Fruit"|"Vegetables")
 --------------------------------------------------
+
+In this case, `[^"]` would backtrack from `` : `` to `` :`` and that would cause `(?!"Fruit"|"Vegetables")` to match `` "Fruits"``
 
 Alternatively, we could move the Greedy quantifiers into the negative lookahead group.
 
