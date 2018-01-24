@@ -63,11 +63,11 @@ The IntelliJ search uses Java Pattern for regex. Possessive quantifiers is perfe
 
 To break down:
 
-`"type"` would match `"Type"`
+`"type"` would match `"type"`
 
 `[^"]++` would match any of ``:``, ``: ``, `` : ``
 
-`(?!"Fruit"|"Vegetables") would match `"Grains"` but not `"Fruits"` or `"Vegetables"`
+`(?!"Fruit"|"Vegetables")` would match `"Grains"` but not `"Fruits"` or `"Vegetables"`
 
 
 For positive searching either "Fruit" or "Vegetables", Greedy quantifier would work. However, it doesn't work for negative search as the backtracking would found something within the wildcard `[^"]+` to get through the negative lookahead group.
