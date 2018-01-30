@@ -5,10 +5,10 @@ Docker has placed its own forwarding in the iptables, so blocking INPUT and OUTP
 
 [source, bash]
 --------------------------------------------------
-# Drop it by default
-iptables -I DOCKER-USER -j DROP
-# Allowing outgoing connection for dns, apt-get, pip
-iptables -I DOCKER-USER -o eth0 -j RETURN
+# Default rule that created by Docker
+# iptables -I DOCKER-USER -j RETURN
+# Drop only incoming, allowing outgoing connection for DNS, apt-get, pip
+iptables -I DOCKER-USER -i eth0 -j DROP
 # Return from where we jump if it is a connection we initial (otherwise apt wouldn't work inside docker)
 iptables -I DOCKER-USER -m conntrack --ctstate RELATED,ESTABLISHED -j RETURN
 # Return from where we jump if it is an IP we trust (replace XXX with an IP you trust)
