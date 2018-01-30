@@ -5,18 +5,14 @@ Docker has placed its own forwarding in the iptables, so blocking INPUT and OUTP
 
 [source, bash]
 --------------------------------------------------
-# New intercept chain
-iptables -N PRE_DOCKER
-# Jump to intercept chain
-iptables -I FORWARD -j PRE_DOCKER
-# Logging for debug (see below)
-# iptables -A PRE_DOCKER -j LOG
-# Return from where we jump if it is a connection we initial (otherwise apt wouldn't work inside docker)
-iptables -A PRE_DOCKER -m conntrack --ctstate RELATED,ESTABLISHED -j RETURN
-# Return from where we jump if it is an IP we trust (replace XXX with an IP you trust)
-iptables -A PRE_DOCKER -s XXX.XXX.XXX.XXX/32 -i eth0 -j RETURN
 # Drop it by default
-iptables -A PRE_DOCKER -i eth0 -j DROP
+iptables -I DOCKER-USER -j DROP
+# Return from where we jump if it is a connection we initial (otherwise apt wouldn't work inside docker)
+iptables -I DOCKER-USER -m conntrack --ctstate RELATED,ESTABLISHED -j RETURN
+# Return from where we jump if it is an IP we trust (replace XXX with an IP you trust)
+iptables -I DOCKER-USER -s XXX.XXX.XXX.XXX/32 -i eth0 -j RETURN
+# Logging for debug (see below)
+# iptables -A DOCKER-USER -j LOG
 --------------------------------------------------
 
 The finish iptables rules (`iptables -S`) would look like
@@ -48,10 +44,10 @@ The finish iptables rules (`iptables -S`) would look like
 -A FORWARD -i docker_gwbridge -o docker_gwbridge -j DROP
 ...
 === The new PRE_DOCKER rules you added ===
--A PRE_DOCKER -j LOG
--A PRE_DOCKER -m conntrack --ctstate RELATED,ESTABLISHED -j RETURN
--A PRE_DOCKER -s XXX.XXX.XXX.XXX/32 -i eth0 -j RETURN
--A PRE_DOCKER -i eth0 -j DROP
+-A DOCKER-USER -j LOG
+-A DOCKER-USER -s XXX.XXX.XXX.XXX/32 -i eth0 -j RETURN
+-A DOCKER-USER -m conntrack --ctstate RELATED,ESTABLISHED -j RETURN
+-A DOCKER-USER -i eth0 -j DROP
 --------------------------------------------------
 
 if `-A PRE_DOCKER -j LOG` is there, you would find the log in `/var/log/syslog` that explain the need of `-i eth0` and `-i docker0`
