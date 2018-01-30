@@ -1,6 +1,7 @@
 = Firewall Docker with Iptables
 
-Docker has placed its own forwarding in the iptables, so blocking INPUT and OUTPUT would not protect services expose via docker publish port. To make it only accessible from a trust ip, here is the guide.
+Docker has placed its own forwarding in the iptables, so blocking INPUT and OUTPUT would not protect services expose via docker publish port. In addition, Docker moves its own rules at the top of yours in FORWARD https://github.com/moby/moby/issues/24848 https://docs.docker.com/engine/userguide/networking/#links https://serverfault.com/a/886257. To make it only accessible from a trust ip, here is the guide.
+
 
 [source, bash]
 --------------------------------------------------
