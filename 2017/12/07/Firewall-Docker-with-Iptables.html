@@ -80,7 +80,7 @@
     <meta property="og:description" content="Docker has placed its own forwarding in the iptables, so blocking INPUT and OUTPUT would not protect services expose via docker publish port. In addition, Docker moves its own rules at the top of yours in FORWARD https://github.com/..." />
     <meta property="og:url" content="https://kfkelvinng.github.io/2017/12/07/Firewall-Docker-with-Iptables.html" />
     <meta property="article:published_time" content="2017-12-07T00:00:00.000Z" />
-    <meta property="article:modified_time" content="2018-01-30T18:02:52.078Z" />
+    <meta property="article:modified_time" content="2018-01-30T18:19:46.296Z" />
     
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="Firewall Docker with Iptables" />
@@ -102,7 +102,7 @@
     "headline": "Firewall Docker with Iptables",
     "url": "https://kfkelvinng.github.io/2017/12/07/Firewall-Docker-with-Iptables.html",
     "datePublished": "2017-12-07T00:00:00.000Z",
-    "dateModified": "2018-01-30T18:02:52.078Z",
+    "dateModified": "2018-01-30T18:19:46.296Z",
     "description": "Docker has placed its own forwarding in the iptables, so blocking INPUT and OUTPUT would not protect services expose via docker publish port. In addition, Docker moves its own rules at the top of yours in FORWARD https://github.com/..."
 }
     </script>
@@ -189,10 +189,10 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash"># Drop it by default
-iptables -I DOCKER-USER -j DROP
-# Allowing outgoing connection for dns, apt-get, pip
-iptables -I DOCKER-USER -o eth0 -j RETURN
+<pre class="highlight"><code class="language-bash" data-lang="bash"># Default rule that created by Docker
+# iptables -I DOCKER-USER -j RETURN
+# Drop only incoming, allowing outgoing connection for DNS, apt-get, pip
+iptables -I DOCKER-USER -i eth0 -j DROP
 # Return from where we jump if it is a connection we initial (otherwise apt wouldn't work inside docker)
 iptables -I DOCKER-USER -m conntrack --ctstate RELATED,ESTABLISHED -j RETURN
 # Return from where we jump if it is an IP we trust (replace XXX with an IP you trust)
