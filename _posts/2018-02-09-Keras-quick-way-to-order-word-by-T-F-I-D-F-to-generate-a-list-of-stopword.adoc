@@ -1,0 +1,71 @@
+= Keras quick way to order word by TFIDF to generate a list of stopword
+
+
+[source, python]
+--------------------------------------------------
+import tensorflow
+import numpy as np
+tokenizer = tensorflow.keras.preprocessing.text.Tokenizer()
+tokenizer.fit_on_texts((x.content for x in TextData().generate()))
+tokenizer.word_index
+>>> {'p': 1, 'li': 2, 'the': 3, 'of': 4, 'and': 5, 'in': 6, 'is': 7, 'to': 8, 'a': 9, 'or': 10, 'with': 11, 'for': 12, 'ul': 13, 'be': 14, 'are': 15, 'as': 16,...}
+len(tokenizer.word_index)
+>>> 21558
+kl = list(tokenizer.word_index.keys())
+kl_tfidf = tokenizer.texts_to_matrix(kl, mode='tfidf')
+# kl_tfidf becomes a sparse matrix of TFIDF
+kl_tfidf
+array([[ 0.        ,  0.69361176,  0.        , ...,  0.        ,
+         0.        ,  0.        ],
+       [ 0.        ,  0.        ,  1.03051561, ...,  0.        ,
+         0.        ,  0.        ],
+       [ 0.        ,  0.        ,  0.        , ...,  0.        ,
+         0.        ,  0.        ],
+       ..., 
+       [ 0.        ,  0.        ,  0.        , ...,  6.98286275,
+         0.        ,  0.        ],
+       [ 0.        ,  0.        ,  0.        , ...,  0.        ,
+         6.98286275,  0.        ],
+       [ 0.        ,  0.        ,  0.        , ...,  0.        ,
+         0.        ,  6.98286275]])
+         
+kl_tfidf_sum = np.sum(kl_tfidf, axis=1)
+kl_tfidf_sum
+array([ 0.69361176,  1.03051561,  0.72885653, ...,  6.98286275,
+        6.98286275,  6.98286275])
+kl_tfidf_sum.shape
+(21558,)
+kl_tfidf_sum.argsort()
+array([    0,     3,     4, ..., 15752, 15766, 21557])
+kl_tfidf_sum.argsort()[:10]
+array([ 0,  3,  4,  2,  5,  7,  6,  8, 10,  9])
+np.take(kl, [0, 1])
+array(['p', 'li'],
+      dtype='<U38')
+kl[:2]
+['p', 'li']
+np.take(kl, kl_tfidf_sum.argsort()[:10])
+array(['p', 'of', 'and', 'the', 'in', 'to', 'is', 'a', 'with', 'or'],
+      dtype='<U38')
+np.take(kl, kl_tfidf_sum.argsort())[:10]
+array(['p', 'of', 'and', 'the', 'in', 'to', 'is', 'a', 'with', 'or'],
+      dtype='<U38')
+np.take(kl, kl_tfidf_sum.argsort())[:100]
+array(['p', 'of', 'and', 'the', 'in', 'to', 'is', 'a', 'with', 'or', 'for',
+       'are', 'be', 'as', 'ul', 'li', 'by', 'may', 'people', 'al', 'et',
+       'that', 'an', 'more', 'can', 'on', 'most', 'have', 'from', 'it',
+       'not', 'than', 'such', 'include', 'which', 'disease', 'at',
+       'common', 'risk', 'cause', 'but', 'there', 'usually', 'symptoms',
+       'other', 'if', 'infection', 'has', 'age', 'this', 'who',
+       'treatment', 'associated', 'after', 'also', 'occur', 'about',
+       'chronic', 'caused', 'years', 'person', '2014', 'when', 'due',
+       '2013', 'severe', 'women', '2010', '2015', 'one', 'factors',
+       'example', '1', 'uk', 'acute', 'pain', '—', 'causes', 'children',
+       'less', 'including', 'primary', 'care', 'been', '2012', 'should',
+       '2', 'over', 'complications', 'increased', 'up', 'within',
+       'present', 'occurs', 'they', 'no', 'clinical', 'their', 'between',
+       'all'],
+      dtype='<U38')
+--------------------------------------------------
+
+
