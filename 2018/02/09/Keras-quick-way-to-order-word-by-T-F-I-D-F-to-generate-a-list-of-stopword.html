@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>Keras quick way to order word by TFIDF to generate a list of stopword</title>
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Keras quick way to order word by TFIDF to generate a list of stopword">
+    <meta name="twitter:description" content="">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Keras quick way to order word by TFIDF to generate a list of stopword">
+    <meta property="og:description" content="">
+
+    <!-- <meta name="twitter:site" content="">
+
+<meta name="twitter:creator" content="">
+
+<meta name="google-site-verification" content="">
+
+<meta property="fb:admins" content="">
+ -->
+
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="/apple-touch-icon-precomposed.png" rel="apple-touch-icon">
+
+    <link href="//fonts.googleapis.com/" rel="dns-prefetch">
+    <link href="//fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic|Open+Sans:700,400&subset=latin,latin-ext" rel="stylesheet">
+
+    <link rel="stylesheet" href="//kfkelvinng.github.io/themes/ghostium/assets/css/main.min.css?v=1.0.0"/>
+    <link rel="stylesheet" href="//kfkelvinng.github.io/themes/ghostium/assets/css/custom.css?v=1.0.0"/>
+    <link rel="stylesheet" href="//kfkelvinng.github.io/themes/ghostium/assets/css/asciidoctor-foundation.css?v=1.0.0"/>
+
+
+
+
+    <script type="text/javascript">
+      var ga_ua = 'UA-XXXXX-X';
+      
+      var disqus_shortname = 'example';
+      
+      var enable_pjax = true;
+
+      // Pace Options
+      // ==============
+      window.paceOptions = {
+        catchupTime: 100,
+        minTime: 100,
+        elements: false,
+        restartOnRequestAfter: 500,
+        startOnPageLoad: false
+      }
+
+      // Ghostium Globals
+      // ==============
+      window.GHOSTIUM = {};
+      GHOSTIUM.haveGA = typeof ga_ua !== 'undefined' && ga_ua !== 'UA-XXXXX-X';
+      GHOSTIUM.haveDisqus = typeof disqus_shortname !== 'undefined' && disqus_shortname !== 'example';
+      GHOSTIUM.enablePjax = typeof enable_pjax !== 'undefined' ? enable_pjax : true;
+    </script>
+
+    <script src="//kfkelvinng.github.io/themes/ghostium/assets/js/head-scripts.min.js?v=1.0.0"></script>
+
+    <link rel="canonical" href="https://kfkelvinng.github.io/2018/02/09/Keras-quick-way-to-order-word-by-T-F-I-D-F-to-generate-a-list-of-stopword.html" />
+    
+    <meta property="og:site_name" content="" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Keras quick way to order word by TFIDF to generate a list of stopword" />
+    <meta property="og:description" content="import tensorflow import numpy as np tokenizer = tensorflow.keras.preprocessing.text.Tokenizer() tokenizer.fit_on_texts((x.content for x in TextData().generate())) tokenizer.word_index &amp;gt;&amp;gt;&amp;gt; {&#x27;p&#x27;: 1, &#x27;li&#x27;: 2, &#x27;the&#x27;: 3, &#x27;of&#x27;: 4, &#x27;and&#x27;: 5, &#x27;in&#x27;:..." />
+    <meta property="og:url" content="https://kfkelvinng.github.io/2018/02/09/Keras-quick-way-to-order-word-by-T-F-I-D-F-to-generate-a-list-of-stopword.html" />
+    <meta property="article:published_time" content="2018-02-09T00:00:00.000Z" />
+    <meta property="article:modified_time" content="2018-02-09T14:14:52.066Z" />
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Keras quick way to order word by TFIDF to generate a list of stopword" />
+    <meta name="twitter:description" content="import tensorflow import numpy as np tokenizer = tensorflow.keras.preprocessing.text.Tokenizer() tokenizer.fit_on_texts((x.content for x in TextData().generate())) tokenizer.word_index &amp;gt;&amp;gt;&amp;gt; {&#x27;p&#x27;: 1, &#x27;li&#x27;: 2, &#x27;the&#x27;: 3, &#x27;of&#x27;: 4, &#x27;and&#x27;: 5, &#x27;in&#x27;:..." />
+    <meta name="twitter:url" content="https://kfkelvinng.github.io/2018/02/09/Keras-quick-way-to-order-word-by-T-F-I-D-F-to-generate-a-list-of-stopword.html" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "",
+    "author": {
+        "@type": "Person",
+        "name": "Kelvin",
+        "image": "https://avatars1.githubusercontent.com/u/1923847?v=4",
+        "url": "undefined/author/undefined",
+        "sameAs": "kfkelvinng.github.io"
+    },
+    "headline": "Keras quick way to order word by TFIDF to generate a list of stopword",
+    "url": "https://kfkelvinng.github.io/2018/02/09/Keras-quick-way-to-order-word-by-T-F-I-D-F-to-generate-a-list-of-stopword.html",
+    "datePublished": "2018-02-09T00:00:00.000Z",
+    "dateModified": "2018-02-09T14:14:52.066Z",
+    "description": "import tensorflow import numpy as np tokenizer = tensorflow.keras.preprocessing.text.Tokenizer() tokenizer.fit_on_texts((x.content for x in TextData().generate())) tokenizer.word_index &amp;gt;&amp;gt;&amp;gt; {&#x27;p&#x27;: 1, &#x27;li&#x27;: 2, &#x27;the&#x27;: 3, &#x27;of&#x27;: 4, &#x27;and&#x27;: 5, &#x27;in&#x27;:..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost ?" />
+    <link rel="alternate" type="application/rss+xml" title="" href="https://kfkelvinng.github.io/rss" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+  </head>
+  <body class="post-template">
+
+    <button data-action="open-drawer" id="drawer-button" class="drawer-button"><i class="fa fa-bars"></i></button>
+    <nav tabindex="-1" class="drawer">
+      <div class="drawer-container">
+        <!--.drawer-search(role="search")-->
+        <ul role="navigation" class="drawer-list">
+          
+          <li class="drawer-list-item">
+            <a href="https://kfkelvinng.github.io" data-pjax>
+              <i class="fa fa-home"></i>Home
+            </a>
+          </li>
+          <!-- <li class="drawer-list-item">
+            <a href="https://kfkelvinng.github.io" title="" data-pjax>
+              <i class="fa fa-list-alt"></i>All posts
+            </a>
+          </li> -->
+          <!--
+          <li class="drawer-list-item">
+            <a href="https://kfkelvinng.github.io/rss/">
+              <i class="fa fa-rss"></i>Subscribe to Feed
+            </a>
+          </li>
+          -->
+          <li class="drawer-list-divider"></li>
+          <li class="drawer-list-item drawer-list-title">
+            Follow me
+          </li>
+          
+          
+        </ul>
+      </div>
+    </nav>
+
+    <div class="drawer-overlay"></div>
+    <main id="container" role="main" class="container">
+      <div class="surface">
+        <div class="surface-container">
+          <div data-pjax-container class="content">
+            
+<section class="wrapper wrapper-post">
+  <div class="wrapper-container">
+    <article itemscope itemtype="http://schema.org/BlogPosting" role="article" class="post post">
+        <section class="post-container">
+          <header class="post-header">
+            <ul class="post-meta-list">
+              <li class="post-meta-item">
+                <time datetime="2018-02-09" itemprop="datePublished">
+                  2018-02-09 00:00:00<ago class="ago">
+                </time>
+              </li>
+              <li class="post-meta-item">
+                <a href="#disqus_thread" data-disqus-identifier="16f8e432-f07b-473b-8d92-640fd8346992">Comments</a>
+              </li>
+            </ul>
+            <h1 itemprop="name headline" class="post-title"><a href="/2018/02/09/Keras-quick-way-to-order-word-by-T-F-I-D-F-to-generate-a-list-of-stopword.html" itemprop="url" data-pjax title="Keras quick way to order word by TFIDF to generate a list of stopword">Keras quick way to order word by TFIDF to generate a list of stopword</a></h1>
+            <!--h2 itemprop="about" class="post-subtitle"></h2-->
+          </header>
+          <aside class="post-side">
+            <div class="post-author">
+                <a href="kfkelvinng.github.io" class="post-author-avatar">
+                  <img src="https://avatars1.githubusercontent.com/u/1923847?v=4" alt="Kelvin">
+                </a>
+              <div class="post-author-info">
+                <a href="kfkelvinng.github.io" class="post-author-name">
+                  Kelvin
+                </a>
+                <p class="post-author-bio"></p>
+              </div>
+            </div>
+          </aside>
+          <div itemprop="articleBody" class="post-body">
+            <div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-python" data-lang="python">import tensorflow
+import numpy as np
+tokenizer = tensorflow.keras.preprocessing.text.Tokenizer()
+tokenizer.fit_on_texts((x.content for x in TextData().generate()))
+tokenizer.word_index
+&gt;&gt;&gt; {'p': 1, 'li': 2, 'the': 3, 'of': 4, 'and': 5, 'in': 6, 'is': 7, 'to': 8, 'a': 9, 'or': 10, 'with': 11, 'for': 12, 'ul': 13, 'be': 14, 'are': 15, 'as': 16,...}
+len(tokenizer.word_index)
+&gt;&gt;&gt; 21558
+kl = list(tokenizer.word_index.keys())
+kl_tfidf = tokenizer.texts_to_matrix(kl, mode='tfidf')
+# kl_tfidf becomes a sparse matrix of TFIDF
+kl_tfidf
+array([[ 0.        ,  0.69361176,  0.        , ...,  0.        ,
+         0.        ,  0.        ],
+       [ 0.        ,  0.        ,  1.03051561, ...,  0.        ,
+         0.        ,  0.        ],
+       [ 0.        ,  0.        ,  0.        , ...,  0.        ,
+         0.        ,  0.        ],
+       ...,
+       [ 0.        ,  0.        ,  0.        , ...,  6.98286275,
+         0.        ,  0.        ],
+       [ 0.        ,  0.        ,  0.        , ...,  0.        ,
+         6.98286275,  0.        ],
+       [ 0.        ,  0.        ,  0.        , ...,  0.        ,
+         0.        ,  6.98286275]])
+
+kl_tfidf_sum = np.sum(kl_tfidf, axis=1)
+kl_tfidf_sum
+array([ 0.69361176,  1.03051561,  0.72885653, ...,  6.98286275,
+        6.98286275,  6.98286275])
+kl_tfidf_sum.shape
+(21558,)
+kl_tfidf_sum.argsort()
+array([    0,     3,     4, ..., 15752, 15766, 21557])
+kl_tfidf_sum.argsort()[:10]
+array([ 0,  3,  4,  2,  5,  7,  6,  8, 10,  9])
+np.take(kl, [0, 1])
+array(['p', 'li'],
+      dtype='&lt;U38')
+kl[:2]
+['p', 'li']
+np.take(kl, kl_tfidf_sum.argsort()[:10])
+array(['p', 'of', 'and', 'the', 'in', 'to', 'is', 'a', 'with', 'or'],
+      dtype='&lt;U38')
+np.take(kl, kl_tfidf_sum.argsort())[:10]
+array(['p', 'of', 'and', 'the', 'in', 'to', 'is', 'a', 'with', 'or'],
+      dtype='&lt;U38')
+np.take(kl, kl_tfidf_sum.argsort())[:100]
+array(['p', 'of', 'and', 'the', 'in', 'to', 'is', 'a', 'with', 'or', 'for',
+       'are', 'be', 'as', 'ul', 'li', 'by', 'may', 'people', 'al', 'et',
+       'that', 'an', 'more', 'can', 'on', 'most', 'have', 'from', 'it',
+       'not', 'than', 'such', 'include', 'which', 'disease', 'at',
+       'common', 'risk', 'cause', 'but', 'there', 'usually', 'symptoms',
+       'other', 'if', 'infection', 'has', 'age', 'this', 'who',
+       'treatment', 'associated', 'after', 'also', 'occur', 'about',
+       'chronic', 'caused', 'years', 'person', '2014', 'when', 'due',
+       '2013', 'severe', 'women', '2010', '2015', 'one', 'factors',
+       'example', '1', 'uk', 'acute', 'pain', '—', 'causes', 'children',
+       'less', 'including', 'primary', 'care', 'been', '2012', 'should',
+       '2', 'over', 'complications', 'increased', 'up', 'within',
+       'present', 'occurs', 'they', 'no', 'clinical', 'their', 'between',
+       'all'],
+      dtype='&lt;U38')</code></pre>
+</div>
+</div>
+          </div>
+          <footer class="post-footer">
+            <div itemprop="author" itemscope itemtype="http://schema.org/Person" class="post-author">
+                <a href="kfkelvinng.github.io" class="post-author-avatar">
+                  <img itemprop="image" src="https://avatars1.githubusercontent.com/u/1923847?v=4" alt="Kelvin">
+                </a>
+              <div class="post-author-info">
+                <h4 class="post-footer-heading">Written By</h4>
+                <a href="kfkelvinng.github.io" itemprop="url" class="post-author-name">
+                  <span itemprop="name">Kelvin</span>
+                </a>
+                <p itemprop="description" class="post-author-bio"></p>
+                  <p class="post-author-location">London</p>
+                  <p class="post-author-website">
+                    <a href="kfkelvinng.github.io" rel="nofollow">kfkelvinng.github.io</a>
+                  </p>
+                <p class="post-info">
+                  <b class="post-info-title">Published on</b>
+                  <time class="post-date">February 09, 2018</time>
+                </p>
+              </div>
+            </div>
+            <div class="post-social">
+              <h4 class="post-footer-heading">Spread the word</h4>
+              <a href="#" data-action="share-twitter"><i class="fa fa-fw fa-lg fa-twitter"></i></a>
+              <a href="#" data-action="share-facebook"><i class="fa fa-fw fa-lg fa-facebook"></i></a>
+              <a href="#" data-action="share-gplus"><i class="fa fa-fw fa-lg fa-google-plus"></i></a>
+            </div>
+          </footer>
+        </section>
+      <section itemprop="comment" class="post-comments">
+        <div id="disqus_thread"></div>
+      </section>
+    </article>
+
+    <footer role="contentinfo" class="footer">
+      <p><small>Copyright &copy; <span itemprop="copyrightHolder"></span>. 2018. All Rights Reserved.</small></p>
+      <p><small><a href="http://ghostium.oswaldoacauan.com/" target="_blank">Ghostium Theme</a> by <a href="http://twitter.com/oswaldoacauan" target="_blank">@oswaldoacauan</a></small></p>
+      <p><small>Adapted by <a href="https://twitter.com/mgreau">Maxime Gréau</a></small></p>
+      <p><small>Published with <a href="http://hubpress.io">HubPress</a></small></p>
+    </footer>
+  </div>
+</section>
+
+
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js?v="></script> 
+      <script type="text/javascript">
+        jQuery( document ).ready(function() {
+          // change date with ago
+          jQuery('ago.ago').each(function(){
+            var element = jQuery(this).parent();
+            element.html( moment(element.text()).fromNow());
+          });
+        });
+
+        hljs.initHighlightingOnLoad();      
+      </script>
+
+    <script src="//kfkelvinng.github.io/themes/ghostium/assets/js/foot-scripts.min.js?v=1.0.0"></script>
+
+
+  </body>
+</html>
