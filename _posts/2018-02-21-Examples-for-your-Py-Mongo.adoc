@@ -1,0 +1,47 @@
+= Examples for your PyMongo
+
+Configuration for running the examples.
+
+[source, python]
+--------------------------------------------------
+from pymongo import MongoClient
+import gridfs
+
+mongo_mydata = MongoClient("localhost:27017").mydata
+mongo_mydata_fs = gridfs.GridFS(mongo_mydata, collections='my_item_fs')
+--------------------------------------------------
+
+A simple queueing system for pickled data for multiple producer
+
+[source, python]
+--------------------------------------------------
+item_producer_queue_i = next(mongo_mydata.item_producer_queue.find().sort("_id", pymongo.DESCENDING).limit(1), 0)
+
+def put(item):
+    while True:
+        try:
+            mongo_mydata.item_producer_queue.insert({"_id": item_producer_queue_i})
+            mongo_mydata_fs.put(pickle.dumps(item), _id=item_producer_queue_i)
+            break
+        except pymongo.errors.DuplicateKeyError:
+            item_producer_queue_i += 1
+--------------------------------------------------
+
+A simple queueing system for pickled data for multiple consumer
+
+[source, python]
+--------------------------------------------------
+item_consumer_queue_i = next(mongo_mydata.item_consumer_queue.find().sort("_id", pymongo.DESCENDING).limit(1), 0)
+def poll():
+    while True:
+        try:
+	        mongo_mydata.item_consumer_queue.insert({"_id": item_consumer_queue_i})
+            yield pickle.loads(mongo_mydata_fs.get(item_consumer_queue_i).read())
+            item_consumer_queue_i += 1
+        except pymongo.errors.DuplicateKeyError:
+        	item_consumer_queue_i
+        except gridfs.errors.NoFile:
+        	import time
+            time.sleep(1)
+            pass
+--------------------------------------------------
