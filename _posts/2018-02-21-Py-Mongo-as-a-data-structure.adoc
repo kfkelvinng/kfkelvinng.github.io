@@ -1,4 +1,4 @@
-= Examples for your PyMongo
+= PyMongo as a data structure
 
 Configuration for running the examples.
 
