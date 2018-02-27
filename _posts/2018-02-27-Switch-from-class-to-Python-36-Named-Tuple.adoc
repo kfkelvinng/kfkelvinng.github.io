@@ -1,0 +1,17 @@
+= Switch from class to Python 3.6 NamedTuple
+
+Since python 3.6, immutable object now can be defined with named tuple with optional variable
+
+[source, python]
+--------------------------------------------------
+from typing import NamedTuple
+
+class Articles(NamedTuple):
+    title: str
+    author: str
+    optional_meta: dict = None
+    
+--------------------------------------------------
+
+Switch from class to NamedTuple is a lot easier. The first incompatiable changes is `__dict__` becomes `_asdict()` for class that involved encoding to json.
+
