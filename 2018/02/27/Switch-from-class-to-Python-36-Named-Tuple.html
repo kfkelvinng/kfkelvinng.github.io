@@ -77,14 +77,14 @@
     <meta property="og:site_name" content="" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content="Switch from class to Python 3.6 NamedTuple" />
-    <meta property="og:description" content="Since python 3.6, immutable object now can be defined with named tuple with optional variable from typing import NamedTuple class Articles(NamedTuple):     title: str     author: str     optional_meta: dict = None Switch from class to NamedTuple is a lot easier...." />
+    <meta property="og:description" content="Since python 3.6, immutable object now can be defined with named tuple with optional variable. This is bring python syntax of defining data model similar to Scala&amp;#8217;s case class except the pattern matching part. from typing import..." />
     <meta property="og:url" content="https://kfkelvinng.github.io/2018/02/27/Switch-from-class-to-Python-36-Named-Tuple.html" />
     <meta property="article:published_time" content="2018-02-27T00:00:00.000Z" />
-    <meta property="article:modified_time" content="2018-02-27T16:29:59.896Z" />
+    <meta property="article:modified_time" content="2018-02-27T16:36:10.606Z" />
     
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="Switch from class to Python 3.6 NamedTuple" />
-    <meta name="twitter:description" content="Since python 3.6, immutable object now can be defined with named tuple with optional variable from typing import NamedTuple class Articles(NamedTuple):     title: str     author: str     optional_meta: dict = None Switch from class to NamedTuple is a lot easier...." />
+    <meta name="twitter:description" content="Since python 3.6, immutable object now can be defined with named tuple with optional variable. This is bring python syntax of defining data model similar to Scala&amp;#8217;s case class except the pattern matching part. from typing import..." />
     <meta name="twitter:url" content="https://kfkelvinng.github.io/2018/02/27/Switch-from-class-to-Python-36-Named-Tuple.html" />
     
     <script type="application/ld+json">
@@ -102,8 +102,8 @@
     "headline": "Switch from class to Python 3.6 NamedTuple",
     "url": "https://kfkelvinng.github.io/2018/02/27/Switch-from-class-to-Python-36-Named-Tuple.html",
     "datePublished": "2018-02-27T00:00:00.000Z",
-    "dateModified": "2018-02-27T16:29:59.896Z",
-    "description": "Since python 3.6, immutable object now can be defined with named tuple with optional variable from typing import NamedTuple class Articles(NamedTuple):     title: str     author: str     optional_meta: dict = None Switch from class to NamedTuple is a lot easier...."
+    "dateModified": "2018-02-27T16:36:10.606Z",
+    "description": "Since python 3.6, immutable object now can be defined with named tuple with optional variable. This is bring python syntax of defining data model similar to Scala&amp;#8217;s case class except the pattern matching part. from typing import..."
 }
     </script>
 
@@ -185,7 +185,7 @@
           </aside>
           <div itemprop="articleBody" class="post-body">
             <div class="paragraph">
-<p>Since python 3.6, immutable object now can be defined with named tuple with optional variable</p>
+<p>Since python 3.6, immutable object now can be defined with named tuple with optional variable. This is bring python syntax of defining data model similar to Scala&#8217;s case class except the pattern matching part.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -198,7 +198,17 @@ class Articles(NamedTuple):
 </div>
 </div>
 <div class="paragraph">
-<p>Switch from class to NamedTuple is a lot easier. The first incompatiable changes is <code><em>dict</em></code> becomes <code>_asdict()</code> for class that involved encoding to json.</p>
+<p>Compare to class, here are the difference for swap <code>class</code> with <code>NamedTuple</code></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>For class that involved encoding to json, the <code>self.<em>dict</em></code> becomes <code>self._asdict()</code></p>
+</li>
+<li>
+<p>Copy constructing, becomes a lot easier with `self._replace(author='Kelvin')</p>
+</li>
+</ul>
 </div>
           </div>
           <footer class="post-footer">
