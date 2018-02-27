@@ -15,7 +15,36 @@ class Articles(NamedTuple):
 
 Compare to class, here are the difference for swap `class` with `NamedTuple`
 
-* For class that involved encoding to json, the `self.__dict__` becomes `self._asdict()`
-* Copy constructing, becomes a lot easier with `self._replace(author='Kelvin')
+For class that involved encoding to json, the `self.\\__dict__` becomes
+`self._asdict()`
+
+[source, python]
+--------------------------------------------------
+import json
+class _Encoder(json.JSONEncoder):
+    def default(self, o):
+        # return o.__dict__
+        return o._asdict()
+        
+print(json.dumps(res, cls=_Encoder, sort_keys=True, indent=4))
+--------------------------------------------------
+
+Copy constructing, becomes a lot easier with `self._replace(author='Kelvin')`. Also,  it comes with the benefit of sharing states of immutable without side effects.
 
 
+[source, python]
+--------------------------------------------------
+# Tree search TicTacToe
+
+class GameState(NamedTuple):
+    player_turn: int
+    board: numpy.ndarray
+
+
+def tree_search(state=None):
+	state = GameState(1, np.zeros(9))
+    for z in np.nonzero(state.board):
+        # Create a copy of the state instead of mutating the shared reference
+        tree_search(state._replace(player_turn=..., board=...))
+
+--------------------------------------------------
