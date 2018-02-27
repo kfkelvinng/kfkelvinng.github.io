@@ -80,7 +80,7 @@
     <meta property="og:description" content="Since python 3.6, immutable object now can be defined with named tuple with optional variable. This is bring python syntax of defining data model similar to Scala&amp;#8217;s case class except the pattern matching part. from typing import..." />
     <meta property="og:url" content="https://kfkelvinng.github.io/2018/02/27/Switch-from-class-to-Python-36-Named-Tuple.html" />
     <meta property="article:published_time" content="2018-02-27T00:00:00.000Z" />
-    <meta property="article:modified_time" content="2018-02-27T16:36:31.806Z" />
+    <meta property="article:modified_time" content="2018-02-27T18:01:52.362Z" />
     
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="Switch from class to Python 3.6 NamedTuple" />
@@ -102,7 +102,7 @@
     "headline": "Switch from class to Python 3.6 NamedTuple",
     "url": "https://kfkelvinng.github.io/2018/02/27/Switch-from-class-to-Python-36-Named-Tuple.html",
     "datePublished": "2018-02-27T00:00:00.000Z",
-    "dateModified": "2018-02-27T16:36:31.806Z",
+    "dateModified": "2018-02-27T18:01:52.362Z",
     "description": "Since python 3.6, immutable object now can be defined with named tuple with optional variable. This is bring python syntax of defining data model similar to Scala&amp;#8217;s case class except the pattern matching part. from typing import..."
 }
     </script>
@@ -200,15 +200,39 @@ class Articles(NamedTuple):
 <div class="paragraph">
 <p>Compare to class, here are the difference for swap <code>class</code> with <code>NamedTuple</code></p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>For class that involved encoding to json, the <code>self.<em>dict</em></code> becomes <code>self._asdict()</code></p>
-</li>
-<li>
-<p>Copy constructing, becomes a lot easier with `self._replace(author='Kelvin')</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>For class that involved encoding to json, the <code>self.__dict__</code> becomes
+<code>self._asdict()</code></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-python" data-lang="python">import json
+class _Encoder(json.JSONEncoder):
+    def default(self, o):
+        # return o.__dict__
+        return o._asdict()
+
+print(json.dumps(res, cls=_Encoder, sort_keys=True, indent=4))</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Copy constructing, becomes a lot easier with <code>self._replace(author='Kelvin')</code>. Also,  it comes with the benefit of sharing states of immutable without side effects.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-python" data-lang="python"># Tree search TicTacToe
+
+class GameState(NamedTuple):
+    player_turn: int
+    board: numpy.ndarray
+
+
+def tree_search(state=None):
+	state = GameState(1, np.zeros(9))
+    for z in np.nonzero(state.board):
+        # Create a copy of the state instead of mutating the shared reference
+        tree_search(state._replace(player_turn=..., board=...))</code></pre>
+</div>
 </div>
           </div>
           <footer class="post-footer">
