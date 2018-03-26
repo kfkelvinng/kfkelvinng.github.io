@@ -1,0 +1,86 @@
+= Networkx Spring Layout for Directed Graph (DiGraph)
+
+Since python 3.6, immutable object now can be defined with named tuple (with optional/default variable in 3.6.1). This brings python syntax of defining data model close to my favorite Scala case class (even better if Python has `case` pattern matching).
+
+[source, python]
+--------------------------------------------------
+from typing import NamedTuple
+
+class Article(NamedTuple):
+    title: str
+    author: str
+    optional_meta: dict = None
+    
+--------------------------------------------------
+
+Before python 3.6, NamedTuple syntax is quite taxing to write
+
+[source, python]
+--------------------------------------------------
+from typing import NamedTuple
+
+class Article(NamedTuple('Article', [
+    ('title', str),
+    ('author', str),
+    ('optional_meta', dict),
+    ])):
+    # Potentially breaking typing hints for IDE, also *args
+    def __new__(cls, optional_meta=None, *args, **kwargs):
+        return super(Article, cls).__new__(cls, optional_meta=None, *args, **kwargs)
+--------------------------------------------------
+
+
+Differences for swapping `class` with `NamedTuple`:
+
+For class that involved encoding to json, the `self.\\__dict__` becomes
+`self._asdict()`
+
+[source, python]
+--------------------------------------------------
+import json
+class _Encoder(json.JSONEncoder):
+    def default(self, o):
+        # return o.__dict__
+        return o._asdict()
+        
+print(json.dumps(res, cls=_Encoder, sort_keys=True, indent=4))
+--------------------------------------------------
+
+Copy constructing, becomes a lot easier with `self._replace(author='Kelvin')`.
+
+Example of sharing states of immutable without side effects by copying.
+
+
+[source, python]
+--------------------------------------------------
+import numpy as np
+from typing import NamedTuple, Iterable
+"""
+Tree search TicTacToe
+"""
+class GameState(NamedTuple):
+    game_id: int
+    player_turn: int
+    board: np.ndarray
+    
+def available_moves(state) -> np.ndarray:
+    return np.nonzero(state.board == 0)[0]
+    
+def move(state, board_idx:int) -> GameState:
+    return state._replace(
+        player_turn=(2 if state.player_turn==1 else 1),
+        board=state.board + ((np.arange(state.board.shape[0]) == board_idx) * state.player_turn)
+    )
+
+def tree_search(state=GameState(123, 1, np.zeros(9)), random_size=2):
+    ams = available_moves(state)
+    if ams.any():
+        for am in np.random.choice(ams, size=random_size):
+            # Create a copy of the state instead of mutating the shared reference
+            tree_search(move(state, am))
+    else:
+        print(state)
+
+tree_search()
+
+--------------------------------------------------
